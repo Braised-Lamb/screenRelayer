@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/screenRelayer">
         <file>icons/logo.png</file>
+        <file>icons/logo.ico</file>
     </qresource>
 </RCC>
