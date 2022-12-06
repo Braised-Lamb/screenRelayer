@@ -4,7 +4,7 @@ screenRelayer::screenRelayer(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-
+	ui.mainToolBar->setVisible(false);
 	timer = new QTimer(this);
 	ui.label->setScaledContents(true);
 	screen = QGuiApplication::primaryScreen();
@@ -19,6 +19,23 @@ screenRelayer::~screenRelayer()
 void screenRelayer::timeoutSlot()
 {
 	QImage curImg = getScreen(0);
+
+	QDateTime time = QDateTime::currentDateTime();
+	QString str = time.toString("yyyy-MM-dd hh:mm:ss dddd");	
+	//为这个QImage构造一个QPainter
+	QPainter painter(&curImg);
+	painter.setCompositionMode(QPainter::RasterOp_SourceAndNotDestination);
+
+	//改变画笔和字体
+	QFont font;
+	//设置显示字体的大小
+	font.setPixelSize(50);
+	painter.setPen(Qt::white);
+	painter.setFont(font);
+
+	//将Hello写在Image的中心
+	painter.drawText(curImg.rect(), Qt::AlignLeft & Qt::AlignBottom, str);
+
 	curPix = QPixmap::fromImage(curImg.mirrored(true, false));
 	//curPix = QPixmap::fromImage(curImg);
 	//curPix.scaled(ui.label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
